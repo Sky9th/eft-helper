@@ -16,7 +16,7 @@
         <el-main>
             <el-row class="body">
                 <el-col :offset="4" :span="16" align="center">
-                    <img :class="slide" src="@/assets/logo.jpg" alt="logo" />
+                    <img :class="'logo ' + slide" src="@/assets/logo.jpg" alt="logo" />
                     <div class="search-input">
                         <i class="el-icon-search"></i>
                         <input ref="search" placeholder="请输入物品名称搜索" v-model="searchForm.title" @input="search" />
@@ -31,7 +31,11 @@
                                 <el-image :src="item.cover_url"></el-image>
                             </div>
                         </div>
-                        <div class="th" style="width:50%;">
+                        <div class="th" style="width:50%;padding-left:5%;box-sizing: border-box">
+                            <div class="label">名称</div>
+                            <span class="price">{{item.title}}</span>
+                        </div>
+                        <div class="th" style="width:20%;">
                             <div class="label">估价</div>
                             <span class="price">{{item.avg}}</span>
                         </div>
@@ -68,7 +72,7 @@
         },
         computed: {
             slide () {
-                return this.list.length > 0 ? 'logo slide' : 'logo'
+                return this.list.length > 0 ? 'slide' : ''
             }
         },
         methods: {
@@ -97,10 +101,10 @@
 </script>
 
 <style scoped>
-    .logo { transition: all .3s; }
-    .logo.slide { width:30%; }
+    .logo { width:650px;transition:width .3s; }
+    .logo.slide { width:300px; }
     .header { height:66px;display: flex;align-items: center }
-    .body { padding-top: 49px }
+    .body { padding-top: 90px }
     .search-input { display:flex;transition: all .3s;align-items:center;background: #fff;border: 1px solid #dfe1e5;box-shadow: none;border-radius: 24px;z-index: 3;height: 44px;margin: 0 auto;width: 482px; }
     .search-input:hover { box-shadow: 0 3px 6px 0 #e9e9e9 }
     .search-input i { width:10%; }
