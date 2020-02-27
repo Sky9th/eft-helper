@@ -16,7 +16,7 @@
         <el-main>
             <el-row class="body">
                 <el-col :offset="4" :span="16" align="center">
-                    <img :class="slide" src="@/assets/logo.png" alt="logo" />
+                    <img :class="slide" src="@/assets/logo.jpg" alt="logo" />
                     <div class="search-input">
                         <i class="el-icon-search"></i>
                         <input ref="search" placeholder="请输入物品名称搜索" v-model="searchForm.title" @input="search" />
@@ -63,7 +63,7 @@
                     title: ''
                 },
                 list: [],
-                loginVisible: true
+                loginVisible: false
             }
         },
         computed: {

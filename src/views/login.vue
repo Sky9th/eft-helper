@@ -62,7 +62,7 @@
                     }, 1000)
                 })
             },
-            registert () {
+            register () {
 
             },
             close () {
