@@ -56,6 +56,9 @@
         <login v-model="loginVisible"></login>
         <notice></notice>
         <register v-model="registerVisible"></register>
+        <div class="adv">
+            <a href="https://www.yuelun.com/tkf?from=skyadmin" target="_blank"><img src="https://download.yuelun.com/V9DOWN/660160.png" alt=""></a>
+        </div>
     </el-container>
 </template>
 
@@ -123,8 +126,8 @@
 <style scoped>
     .logo { width:650px;transition:width .3s; }
     .logo.slide { width:300px; }
-    .header { height:66px;display: flex;align-items: center }
-    .body { padding-top: 90px }
+    .header { height:60px;display: flex;align-items: center;position: relative;z-index: 1 }
+    .body { padding-top: 120px }
     .search-input { display:flex;transition: all .3s;align-items:center;background: #fff;border: 1px solid #dfe1e5;box-shadow: none;border-radius: 24px;z-index: 3;height: 44px;margin: 0 auto;width: 482px; }
     .search-input:hover { box-shadow: 0 3px 6px 0 #e9e9e9 }
     .search-input i { width:10%; }
@@ -139,4 +142,7 @@
     .tr span { color:#555;font-size:24px; }
     .tr .price { color:#66b1ff; }
     .tr .date { font-size:16px }
+
+    .adv { position:absolute;top:0;width:50%;text-align: center;z-index: 2;left:25%; }
+    .adv img { max-height:160px; }
 </style>
