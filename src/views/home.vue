@@ -3,12 +3,15 @@
         <el-header>
             <el-row class="header" :gutter="15">
                 <el-col :span="12" >
-                    <img src="@/assets/all.png" alt="logo">
+                    <a href="https://github.com/Sky9th/sky-admin-vue" target="_blank"><img src="@/assets/all.png" alt="logo"></a>
                 </el-col>
                 <el-col :span="12" align="right">
-                    <div class="user">
-                        <el-button type="success" size="mini">注册</el-button>
-                        <el-button type="primary" size="mini">登录</el-button>
+                    <div class="user" v-if="!userInfo.mail">
+                        <el-button type="success" size="mini" @click="register">注册</el-button>
+                        <el-button type="primary" size="mini" @click="loginVisible = true">登录</el-button>
+                    </div>
+                    <div class="user" v-else>
+                        <span>欢迎，</span><el-tag type="primary">{{userInfo.mail}}</el-tag> <el-button size="mini" type="danger" @click="logout">注销</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -48,31 +51,39 @@
             </el-row>
         </el-main>
         <el-footer class="copyright">
-            Copyright &copy; 2020 SkyAdmin
+            Copyright &copy; 2020 SkyAdmin | <a href="https://cloud.baidu.com/?from=console" target="_blank">百度智能云AI提供技术支持</a>
         </el-footer>
-        <login :visible="loginVisible"></login>
+        <login v-model="loginVisible"></login>
+        <notice></notice>
+        <register v-model="registerVisible"></register>
     </el-container>
 </template>
 
 <script>
     import service from "@/api";
     import login from './login';
+    import notice from './notice';
+    import register from './register';
+
+    import { mapState } from 'vuex'
 
     export default {
         name: "home",
-        components: {login},
+        components: {login, register, notice},
         data () {
             return {
                 searchForm: {
                     title: ''
                 },
                 list: [],
-                loginVisible: false
+                loginVisible: false,
+                registerVisible: false
             }
         },
         computed: {
+            ...mapState(['userInfo']),
             slide () {
-                return this.list.length > 0 ? 'slide' : ''
+                return this.list.length > 0 || this.searchForm.title > 0 ? 'slide' : ''
             }
         },
         methods: {
@@ -82,6 +93,9 @@
                         this.list = data.list
                         this.data = data
                     })
+                } else{
+                    this.list = []
+                    this.data = {}
                 }
             },
             search () {
@@ -89,6 +103,12 @@
                 this.interval = setTimeout(() => {
                     this.index()
                 }, 300)
+            },
+            register () {
+                this.registerVisible = true
+            },
+            logout () {
+                this.$store.dispatch('logout')
             }
         },
         mounted () {

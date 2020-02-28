@@ -102,7 +102,7 @@ service.interceptors.response.use(
                 error.message = '未授权，请登录'
                 util.cookies.remove('sessionKey')
                 util.cookies.set('redirect', router.currentRoute.fullPath)
-                router.push('/login')
+                router.push('/')
                 break
             case 403:
                 error.message = '拒绝访问'

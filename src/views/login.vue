@@ -1,73 +1,93 @@
 <template>
-    <el-dialog :visible.sync="visible">
-        <el-form :model="form" label-width="80px">
-            <el-form-item label="邮箱">
-                <el-input v-model="form.email" autocomplete="off"></el-input>
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false">
+        <el-form :model="form" :rules="rules" label-width="80px" ref="form">
+            <el-form-item label="邮箱" prop="mail">
+                <el-input v-model="form.mail" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
-                <el-input v-model="form.password" autocomplete="off"></el-input>
+            <el-form-item label="密码" prop="password">
+                <el-input v-model="form.password" type="password" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码">
-                <el-input v-model="form.repassword" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="验证码">
+            <el-form-item label="验证码" prop="code">
                 <el-input v-model="form.code" autocomplete="off">
-                    <el-button type="primary" slot="append" @click="getVerify">{{btnText}}</el-button>
+                    <template slot="append"><img class="login-code" :src="captchaImg" @click="refreshVerify"></template>
                 </el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="register">注 册</el-button>
+            <el-button type="primary" @click="login">登 录</el-button>
         </div>
     </el-dialog>
 </template>
 
 <script>
     import service from "@/api/index";
+    import util from '@/libs/util'
     export default {
         name: "login",
-        props: ['visible'],
+        props:['value'],
         data () {
             return {
                 form: {
-                    email: 'weitianxu@qq.com',
+                    mail: '',
                     password: '',
-                    repassword: '',
-                    code: ''
+                    code: '',
                 },
+                captchaImg: '',
                 dialogVisible: false,
-                btnInterval: false,
-                btnBreak: 5,
-                btnText: '发送验证码',
+                rules: {
+                    mail: [
+                        { required: true, message: '请输入', trigger: 'blur' },
+                    ],
+                    password: [
+                        { required: true, message: '请输入', trigger: 'blur' },
+                    ],
+                    code: [
+                        { required: true, message: '请输入', trigger: 'blur' },
+                    ],
+                }
+            }
+        },
+        computed: {
+            fingerprint () {
+                return this.$store.state.fingerprint
             }
         },
         watch: {
-            visible () {
-                this.dialogVisible = this.visible
+            value (val) {
+                this.dialogVisible = val
+            },
+            dialogVisible (val) {
+                this.$emit('input', val)
             }
         },
         methods: {
-            getVerify () {
-                service.verify(this.form.email).then(() => {
-                    this.btnText = this.btnBreak + 's'
-                    let that = this
-                    this.btnInterval = setInterval(() => {
-                        that.btnBreak = that.btnBreak - 1
-                        this.btnText = this.btnBreak + 's'
-                        if (that.btnBreak <= 0) {
-                            clearInterval(this.btnInterval)
-                            this.btnText = '发送验证码'
-                        }
-                    }, 1000)
+            refreshVerify () {
+                service.captcha(this.fingerprint).then(data => {
+                    this.captchaImg = data
                 })
             },
-            register () {
-
-            },
-            close () {
-                this.$emit()
+            login () {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.form.fingerprint = this.fingerprint
+                        service.login(this.form).then(data => {
+                            if (data) {
+                                util.cookies.set('sessionKey', data.sessionKey)
+                                this.dialogVisible = false
+                                this.$store.dispatch('getUserInfo')
+                            }
+                        }).catch(() => {
+                            this.refreshVerify()
+                        })
+                    } else {
+                        return false;
+                    }
+                });
             }
+        },
+        mounted() {
+            this.refreshVerify()
         },
         destroyed() {
             clearInterval(this.btnInterval)
@@ -76,5 +96,5 @@
 </script>
 
 <style scoped>
-
+.login-code { display:block;margin:0 -20px;height:38px;cursor: pointer }
 </style>
