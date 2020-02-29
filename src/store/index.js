@@ -9,7 +9,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         fingerprint: '',
-        userInfo: {}
+        userInfo: {},
+        isPhone: false
     },
     mutations: {
         setFingerprint (state, payload) {
@@ -36,6 +37,11 @@ export default new Vuex.Store({
         logout ({commit}) {
             util.cookies.remove('sessionKey')
             commit('setUserInfo', {})
+        },
+        isPhone ({state}) {
+            if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) { //移动端
+                state.isPhone = true
+            }
         }
     },
     modules: {}

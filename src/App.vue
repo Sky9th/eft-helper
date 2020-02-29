@@ -9,6 +9,7 @@
         created () {
             this.$store.dispatch('getFingerprint')
             this.$store.dispatch('getUserInfo')
+            this.$store.dispatch('isPhone')
         }
     }
 </script>

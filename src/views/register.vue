@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false">
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="100%">
         <el-form :model="form" :rules="rules" label-width="80px" ref="form">
             <el-form-item label="邮箱" prop="mail">
                 <el-input v-model="form.mail" autocomplete="off"></el-input>
@@ -171,4 +171,7 @@
 
 <style scoped>
 .pre { white-space: pre-wrap;word-wrap: break-word;margin: 0 }
+@media screen and (max-width: 750px) {
+    .el-dialog { width:100%!important; }
+}
 </style>

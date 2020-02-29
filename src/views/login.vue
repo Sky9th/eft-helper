@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false">
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="100%">
         <el-form :model="form" :rules="rules" label-width="80px" ref="form">
             <el-form-item label="邮箱" prop="mail">
                 <el-input v-model="form.mail" autocomplete="off"></el-input>
@@ -23,6 +23,7 @@
 <script>
     import service from "@/api/index";
     import util from '@/libs/util'
+    import {mapState} from "vuex";
     export default {
         name: "login",
         props:['value'],
@@ -49,6 +50,7 @@
             }
         },
         computed: {
+            ...mapState(['userInfo','isPhone']),
             fingerprint () {
                 return this.$store.state.fingerprint
             }
@@ -97,4 +99,7 @@
 
 <style scoped>
 .login-code { display:block;margin:0 -20px;height:38px;cursor: pointer }
+
+@media screen and (max-width: 750px) {
+}
 </style>

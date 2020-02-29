@@ -1,4 +1,6 @@
 import request from '@/plugin/axios'
+import store from '@/store'
+
 
 const api = {
     index (query) {
@@ -7,7 +9,8 @@ const api = {
     verify (mail) {
         return request.post('eft/getVerify', {mail}, {timeout: 0})
     },
-    captcha (fingerprint) {
+    async captcha (fingerprint) {
+        await store.dispatch('getFingerprint')
         return request.post('eft/captcha', {fingerprint})
     },
     register (data) {
@@ -21,6 +24,9 @@ const api = {
     },
     advise (data) {
         return request.post('eft/advise', data)
+    },
+    mistake (id) {
+        return request.get('eft/mistake/' + id)
     }
 }
 
