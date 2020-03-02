@@ -18,7 +18,7 @@
             <el-row>
                 <el-col :offset="isPhone ? 0 : 4" :span="isPhone ? 24 : 16" align="center">
                     <div><img :class="'logo ' + slide" src="@/assets/logo.jpg" alt="logo" /></div>
-                    <el-alert type="error" style="width:500px;max-width: 100%">手机端无法搜索数据的bug已经修复，小助手处于上线测试阶段，有什么建议请点击反馈建议按钮进行反馈，数据正在陆续添加中，除武器、子弹和部分配件正在持续录入中，其余数据基本录入</el-alert>
+                    <el-alert type="error" style="width:500px;max-width: 100%">小助手处于上线测试阶段，数据正在陆续添加中，除子弹正在持续录入中，其余数据基本录入,覆盖率达<span style="font-weight: bold">90%</span></el-alert>
                     <form class="search-input" @submit="phoneSearch" @submit.prevent="">
                         <i class="el-icon-search"></i>
                         <input ref="search" placeholder="请输入物品名称搜索" v-model="searchForm.title" @input="search" @focus="focus" @blur="blur" @submit="index" />
