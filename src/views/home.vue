@@ -17,11 +17,12 @@
         <el-main class="body">
             <el-row>
                 <el-col :offset="isPhone ? 0 : 4" :span="isPhone ? 24 : 16" align="center">
-                    <img :class="'logo ' + slide" src="@/assets/logo.jpg" alt="logo" />
-                    <div class="search-input">
+                    <div><img :class="'logo ' + slide" src="@/assets/logo.jpg" alt="logo" /></div>
+                    <el-alert type="error" style="width:500px;max-width: 100%">小助手处于上线测试阶段，有什么建议请点击反馈建议按钮进行反馈，数据正在陆续添加中，除武器、子弹和部分配件正在持续录入中，其余数据基本录入</el-alert>
+                    <form class="search-input" @submit="phoneSearch">
                         <i class="el-icon-search"></i>
-                        <input ref="search" placeholder="请输入物品名称搜索" v-model="searchForm.title" @input="search" />
-                    </div>
+                        <input ref="search" placeholder="请输入物品名称搜索" v-model="searchForm.title" @input="search" @focus="focus" @blur="blur" @submit="index" />
+                    </form>
                 </el-col>
             </el-row>
             <el-row class="data">
@@ -33,7 +34,11 @@
                             </template>
                         </el-table-column>
                         <el-table-column prop="title" label="名称"></el-table-column>
-                        <el-table-column prop="avg" label="估价(卢布)"></el-table-column>
+                        <el-table-column prop="avg" label="估价(卢布)">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.avg|formatNumber(0)}}</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="update_date" label="更新时间"></el-table-column>
                         <el-table-column label="纠错">
                             <template slot-scope="scope">
@@ -56,7 +61,7 @@
         <login v-model="loginVisible"></login>
         <notice></notice>
         <register v-model="registerVisible"></register>
-        <div class="adv">
+        <div class="adv" v-if="advVisible">
             <a href="https://www.yuelun.com/tkf?from=skyadmin" target="_blank"><img src="https://download.yuelun.com/V9DOWN/660160.png" alt=""></a>
         </div>
     </el-container>
@@ -78,6 +83,7 @@
                 searchForm: {
                     title: ''
                 },
+                advVisible: true,
                 list: [],
                 loginVisible: false,
                 registerVisible: false
@@ -86,14 +92,14 @@
         computed: {
             ...mapState(['userInfo','isPhone']),
             slide () {
-                return this.list.length > 0 || this.searchForm.title.length > 0 ? 'slide' : ''
+                return this.list.length > 0 || this.searchForm.title.length > 0 || !this.advVisible ? 'slide' : ''
             }
         },
         methods: {
             index () {
                 if (this.searchForm.title.length > 0) {
                     service.index(this.searchForm).then(data => {
-                        let list = data.list
+                        let list = data.data
                         for (let i in list) {
                             list[i].mistake = false
                         }
@@ -105,11 +111,18 @@
                     this.data = {}
                 }
             },
+            phoneSearch () {
+                this.index()
+                this.$refs.search.blur()
+            },
             search () {
-                clearTimeout(this.interval)
-                this.interval = setTimeout(() => {
-                    this.index()
-                }, 300)
+                console.log(this.isPhone)
+                if (!this.isPhone) {
+                    clearTimeout(this.interval)
+                    this.interval = setTimeout(() => {
+                        this.index()
+                    }, 300)
+                }
             },
             register () {
                 this.registerVisible = true
@@ -127,12 +140,23 @@
                 service.mistake(id).then(() => {
                     this.$message.success('已提交')
                 })
+            },
+            focus () {
+                if (this.isPhone) {
+                    this.advVisible = false
+                }
+            },
+            blur () {
+                if (this.isPhone) {
+                    this.advVisible = true
+                }
             }
         },
         mounted () {
             this.index()
             this.$nextTick(() => {
-                this.$refs.search.focus()
+                if (!this.isPhone)
+                    this.$refs.search.focus()
             })
         }
     }
@@ -146,7 +170,7 @@
     .header { height:110px;display: flex; align-items:center;justify-content: space-between; position: relative;z-index: 1 }
     .user-status { float:right; }
     .body {  padding-top: 70px; padding-bottom: 100px}
-    .search-input { display:flex;transition: all .3s;align-items:center;background: #fff;border: 1px solid #dfe1e5;box-shadow: none;border-radius: 24px;z-index: 3;height: 44px;margin: 0 auto;width: 482px; }
+    .search-input { display:flex;transition: all .3s;align-items:center;background: #fff;border: 1px solid #dfe1e5;box-shadow: none;border-radius: 24px;z-index: 3;height: 44px;margin: 0 auto;width: 482px;margin-top: 15px }
     .search-input:hover { box-shadow: 0 3px 6px 0 #e9e9e9 }
     .search-input i { width:10%; }
     .search-input input { width:95%;background-color: transparent;border: none;margin: 0;padding: 0;color: rgba(0,0,0,.87);word-wrap: break-word;outline: none;display: flex;flex: 100%;-webkit-tap-highlight-color: transparent;height: 34px;font-size: 16px; }
@@ -167,7 +191,7 @@
     .none { text-align:center }
 
     @media screen and (max-width: 750px) {
-        .el-header { padding:0; }
+        .el-header { padding:0;height:50px!important; }
         .header { height:50px;display: flex; align-items:center; position: relative;z-index: 1 }
 
         .user-status { font-size: 12px }

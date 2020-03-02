@@ -118,7 +118,7 @@ Vue.use(FormItem);
 // Vue.use(TabPane);
 Vue.use(Tag);
 // Vue.use(Tree);
-// Vue.use(Alert);
+Vue.use(Alert);
 // Vue.use(Slider);
 Vue.use(Icon);
 Vue.use(Row);

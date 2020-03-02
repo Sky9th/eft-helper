@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="100%">
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" :width="isPhone ? '100%' :'500px'">
         <el-form :model="form" :rules="rules" label-width="80px" ref="form">
             <el-form-item label="邮箱" prop="mail">
                 <el-input v-model="form.mail" autocomplete="off"></el-input>
@@ -76,6 +76,7 @@
 <script>
     import service from "@/api/index";
     import util from '@/libs/util'
+    import {mapState} from "vuex";
     export default {
         name: "login",
         props:['value'],
@@ -109,6 +110,9 @@
                     ],
                 }
             }
+        },
+        computed: {
+            ...mapState(['userInfo','isPhone']),
         },
         watch: {
             value (val) {

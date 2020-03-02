@@ -1,9 +1,9 @@
 <template>
     <div>
-        <el-card class="notice" v-if="!visible">
+        <el-card class="notice" v-if="!visible || !isPhone">
             <div slot="header">
                 通知公告
-                <el-button style="float: right; padding: 3px 0" type="text" @click="close">关闭</el-button>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="close" v-if="isPhone">关闭</el-button>
             </div>
             <div class="notice-content">
                 <p>“塔科夫小助手”是腐竹在玩逃离塔科夫时，在战局中经常因为无法记住每个物品的价格而带来的选择困难症，带来诸多不便，所以自行制作了这个小助手并免费分享给大家。</p>
@@ -99,8 +99,7 @@
 </script>
 
 <style scoped>
-    .notice { position: fixed;right:15px;top:150px;width:240px;opacity: .3}
-    .notice:hover { opacity: 1 }
+    .notice { position: fixed;right:15px;top:150px;width:240px;}
     .notice-btn { display: flex; align-items: center;justify-content: center;color:#409EFF;margin-top:25px  }
     .notice-btn i { font-size: 16px }
     .notice-btn span { font-size:18px }
