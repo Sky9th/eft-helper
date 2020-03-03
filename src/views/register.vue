@@ -135,12 +135,12 @@
                     let that = this
                     this.btnInterval = setInterval(() => {
                         that.btnBreak = that.btnBreak - 1
-                        this.btnText = this.btnBreak + 's'
+                        that.btnText = this.btnBreak + 's'
                         if (that.btnBreak <= 0) {
                             clearInterval(this.btnInterval)
-                            this.disabled = false
+                            that.disabled = false
                             that.btnBreak = 60
-                            this.btnText = '发送验证码'
+                            that.btnText = '发送验证码'
                         }
                     }, 1000)
                 }).catch(() => {
