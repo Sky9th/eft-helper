@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        config: {},
         fingerprint: '',
         userInfo: {},
         isPhone: false
@@ -42,6 +43,11 @@ export default new Vuex.Store({
             if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) { //移动端
                 state.isPhone = true
             }
+        },
+        getConfig ({state}) {
+            service.config().then(data => {
+                state.config = data
+            })
         }
     },
     modules: {}

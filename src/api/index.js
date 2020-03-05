@@ -27,6 +27,9 @@ const api = {
     },
     mistake (id) {
         return request.get('eft/mistake/' + id)
+    },
+    config () {
+        return request.get('eft/config')
     }
 }
 

@@ -5,12 +5,7 @@
                 通知公告
                 <el-button style="float: right; padding: 3px 0" type="text" @click="close">关闭</el-button>
             </div>
-            <div class="notice-content">
-                <p>“塔科夫小助手”是腐竹在玩逃离塔科夫时，在战局中经常因为无法记住每个物品的价格而带来的选择困难症，带来诸多不便，所以自行制作了这个小助手并免费分享给大家。</p>
-                <p>塔科夫小助手的数据是利用百度AI技术进行智能识别，没有进行过人工排查，也不是官方的API接口，<span style="color:#F56C6C">所以本站的所有信息不保证其时效性，请各位知悉</span></p>
-                <p style="color:#F56C6C;font-weight: bold">重要的事情说三遍</p>
-                <p style="color:#F56C6C;font-weight: bold">数据仅供参考!数据仅供参考!数据仅供参考!</p>
-            </div>
+            <pre class="notice-content">{{config.notice}}</pre>
             <div class="notice-btn">
                 <el-button type="warning" size="mini" class="notice-btn-item">
                     <i class="el-icon-connection"></i>
@@ -61,7 +56,7 @@
             }
         },
         computed: {
-            ...mapState(['userInfo','isPhone']),
+            ...mapState(['userInfo','isPhone','config']),
             fingerprint () {
                 return this.$store.state.fingerprint
             }
@@ -103,6 +98,13 @@
     .notice-btn { display: flex; align-items: center;justify-content: center;color:#409EFF;margin-top:25px  }
     .notice-btn i { font-size: 16px }
     .notice-btn span { font-size:18px }
+    .notice-content {
+        width:100%;
+        display: block;
+        font-family: -moz-fixed;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
     .login-code { display:block;margin:0 -20px;height:38px;cursor: pointer }
 
 
