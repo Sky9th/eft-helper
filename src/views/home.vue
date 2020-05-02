@@ -18,6 +18,7 @@
             <el-row>
                 <el-col :offset="isPhone ? 0 : 4" :span="isPhone ? 24 : 16" align="center">
                     <div><img :class="'logo ' + slide" src="@/assets/logo.jpg" alt="logo" /></div>
+                    <el-alert type="success" style="width:500px;max-width: 100%;margin-bottom: 5px">APP下载地址：<a href="https://pan.baidu.com/s/1AA28-tK1RwwLLa_D9uUk8Q">点击网盘链接</a>  提取码：jx3r， 群号：737356564，如无意外，数据会在每月初进行一次更新</el-alert>
                     <el-alert type="error" style="width:500px;max-width: 100%">{{config.warning}}</el-alert>
                     <form class="search-input" @submit="phoneSearch" @submit.prevent="">
                         <i class="el-icon-search"></i>
@@ -30,13 +31,13 @@
                     <el-table :data="list" v-if="list.length > 0">
                         <el-table-column width="50px" prop="cover_url" label="封面">
                             <template slot-scope="scope">
-                                <img class="cover" :src="scope.row.cover_url" width="40px" />
+                                <img class="cover" :src="scope.row.cover_url.src" width="40px" />
                             </template>
                         </el-table-column>
                         <el-table-column prop="title" label="名称"></el-table-column>
                         <el-table-column prop="avg" label="估价(卢布)">
                             <template slot-scope="scope">
-                                <span>{{scope.row.avg|formatNumber(0)}}</span>
+                                <span>{{scope.row.price|formatNumber(0)}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column prop="update_date" label="更新时间"></el-table-column>
